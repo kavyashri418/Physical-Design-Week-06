@@ -46,11 +46,23 @@ Clock Uncertainty
 Clock uncertainty represents the overall margin added to the timing analysis to account for all kinds of unknown variations in the clock signal, including jitter, skew, and other unpredictable delays.
 It is an intentional design margin used by EDA tools to ensure that the circuit remains functional under worst-case conditions.
 
-Why They Matter
-Both jitter and uncertainty are critical in:
-- Static Timing Analysis (STA)
+Why jitter and uncertainty are critical:
+- Static Timing Analysis (A)
 - Defining safe setup and hold timing margins
 - Ensuring reliable operation of high-speed digital systems
 - Avoiding timing violations due to unpredictable clock behavior
+
+Let us Identify timing paths from designs, with single clock
+
+## Clock Tree Routing and Buffering using H-tree Algorithm
+
+What can go wrong, if there's a glitch?
+Incorrect data in memory will result in inaccurate functionality
+
+Impact of  Crosstalk Delta Delay-Skew
+
+Timing Analysis with real clocks using OpenSTA setup timing analysis using real clocks
+
+## Introduction to  Maze Routing - Lee's Algorithm Routing and Design Rule Check (DRC)
 
 
