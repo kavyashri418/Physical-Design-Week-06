@@ -231,6 +231,79 @@ PHYSICAL VERIFICATION DRC & LVS
 
 <img width="628" height="583" alt="Screenshot 2025-10-28 013742" src="https://github.com/user-attachments/assets/b147d3a2-c4c0-45f6-9a81-92db554d3995" />
 
+## LAB-01 Familiarize with OpenLANE flow
+
+In order to access the OpenLane tool, we will be needing some basic linux commands.They are listed below
+
+- ls – List files and directories
+- pwd – Show the current directory path
+- cd – Change directory
+- mkdir – Create a new directory
+- rmdir – Remove an empty directory
+- rm – Remove files or directories
+- cp – Copy files or directories
+- mv – Move or rename file
+
+Using a sample design included with OpenLANE, the goals are:
+- To understand the OpenLANE directory structure and the purpose of different input files
+- To get familiar with how the OpenLANE flow works
+- To observe and study the results produced at each stage of the flow
+- To learn about the various settings, options, and parameters that can be adjusted to explore different design possibilities
+
+## Design Preparation Step
+To work inside the OpenLane environment, you first need to start a Bash shell using Docker while being in the OpenLane directory. The Docker command launches a container that provides the proper environment for running OpenLane tools.
+Once you are inside the container’s Bash shell, the next step is to run the flow.tcl script. This script defines the entire OpenLane flow and manages all stages from RTL to GDSII. If you want to run the flow step-by-step and have control over each stage, you must use the -interactive option. Without this option, the script will automatically run the complete flow in one go and directly produce the final results.
+
+1. To invoke OpenLANE, cd to the home directory of OpenLANE and run docker:
+```
+docker run -it -v $(pwd):/openLANE_flow -v $PDK_ROOT:$PDK_ROOT -e PDK_ROOT=$PDK_ROOT -u $(id -u $USER):$(id -g $USER) efabless/openlane:v0.21
+```
+
+2. The entry point for OpenLANE is the ./flow.tcl script. This script is used to run the flow, start interactive sessions, select the configuration and create OpenLane design files.
+
+- To run the automated flow for a design:
+```
+./flow.tcl -design <design_name>
+```
+
+- To start an interactive session:
+```
+./flow.tcl -interactive
+```
+
+<img width="1818" height="1003" alt="Screenshot 2025-11-15 235001" src="https://github.com/user-attachments/assets/fcbca7bd-59cb-450f-a84d-1edf4c48476a" />
+
+3. We will be using the interactive mode to learn about the different steps in the flow.
+
+The commands to start an interactive session and run the synthesis of the picorv32a example design are given below:
+```
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a
+run_synthesis
+```
+
+## Synthesis Result
+
+<img width="1819" height="978" alt="Screenshot 2025-11-15 235450" src="https://github.com/user-attachments/assets/866c1613-dc0b-4ee3-89e2-d2222824727f" />
+
+## Synthesis Statistics
+
+![Web_Photo_Editor (10)](https://github.com/user-attachments/assets/da5680f9-3d7f-4b99-ac37-6ac8fe3daf01)
+
+Flop Ratio Calculation:
+```
+Flop Ratio = (Total no. of Flops/ Total no. of cells in the design)
+           = 1613/ 14876
+           = 10.843%
+```
+
+
+
+
+
+
+
   
 
 
