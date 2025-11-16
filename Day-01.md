@@ -295,7 +295,7 @@ Flop Ratio Calculation:
 ```
 Flop Ratio = (Total no. of Flops/ Total no. of cells in the design)
            = 1613/ 14876
-           = 10.843%
+           = 0.108429685 (OR) 10.8429 %
 ```
 
 
