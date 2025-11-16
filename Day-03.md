@@ -3,14 +3,14 @@
 ## 1 Inception of Layout - CMOS Fabrication Process
 16-Mask CMOS Process
 
-i) Selecting a substrate with suitable properties
-ii) Creating Active Region for the transistors
-iii) N-Well and P-Well Formation
-iv) Formation of Gate
-v) Lightly-Doped Drain (LDD) Formation
-vi) Source and Drain Formation
-vii) Formation of Contacts and Local Interconnects
-viii) Formation of Higher Level Metal Layers 
+- i) Selecting a substrate with suitable properties
+- ii) Creating Active Region for the transistors
+- iii) N-Well and P-Well Formation
+- iv) Formation of Gate
+- v) Lightly-Doped Drain (LDD) Formation
+- vi) Source and Drain Formation
+- vii) Formation of Contacts and Local Interconnects
+- viii) Formation of Higher Level Metal Layers 
 
 ## 1.1 Selecting a substrate with suitable properties
 - P-type substrate with high resistivity (5~50ohms)
