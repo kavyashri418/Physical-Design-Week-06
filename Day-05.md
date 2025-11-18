@@ -48,3 +48,104 @@ T <--- MST(APCs,COSTs)
 Return ei,j
 ```
 
+## LAB-05: Steps to build Power Distribution Network
+
+```
+# Add all LEF files, including the merged one, into the OpenLANE environment
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+
+# Select a timing-centric synthesis strategy
+set ::env(SYNTH_STRATEGY) "DELAY 3"
+
+# Enable sizing during synthesis
+set ::env(SYNTH_SIZING) 1
+
+# Run the synthesis stage after preparation
+run_synthesis
+```
+
+<img width="980" height="237" alt="Screenshot 2025-11-18 222342" src="https://github.com/user-attachments/assets/c303695f-5c5d-4c6b-a73d-e441d5b9329c" />
+<img width="984" height="274" alt="Screenshot 2025-11-18 221727" src="https://github.com/user-attachments/assets/bb1ab73d-3d64-43b8-a101-94f8a4666414" />
+
+```
+# Commands are internally executed when 'run_floorplan' is called
+init_floorplan
+place_io
+tap_decap_or
+
+# Proceed with placement
+run_placement
+
+# If a CTS-related library issue appears, clear the variable
+unset ::env(LIB_CTS)
+
+# Generate the clock tree for the design
+run_cts
+
+# After CTS is completed, create the power distribution network
+gen_pdn
+```
+
+Command to generate PDN in openLANE: ```run_power_grid_generation ```
+
+```
+# Navigate to the directory where the PDN DEF file was generated
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/13-11_13_13/tmp/floorplan/
+
+# Launch Magic and load the PDN DEF along with the technology and LEF files
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech \
+      lef read ../../tmp/merged.lef \
+      def read 14-pdn.def &
+```
+
+<img width="430" height="436" alt="Screenshot 2025-11-18 221045" src="https://github.com/user-attachments/assets/5de4a398-a215-405f-9ef0-a850986dd356" />
+
+Zoomed Layout
+
+<img width="881" height="504" alt="Screenshot 2025-11-18 221225" src="https://github.com/user-attachments/assets/4666a869-6a70-4565-ad41-3fe4a8371917" />
+
+## LAB-5.1: Steps to perform routing
+
+Command to run the routing in OpenLANE: ```run_routing```
+```
+# Check value of 'CURRENT_DEF'
+echo $::env(CURRENT_DEF)
+
+# Check value of 'ROUTING_STRATEGY'
+echo $::env(ROUTING_STRATEGY)
+
+```
+
+Layout after routing
+
+<img width="393" height="395" alt="Screenshot 2025-11-18 221106" src="https://github.com/user-attachments/assets/d57df914-883a-42df-a839-c79d2bf99c1a" />
+
+Zoomed Layout after routing
+
+<img width="974" height="439" alt="Screenshot 2025-11-18 223546" src="https://github.com/user-attachments/assets/003e6590-24f1-49ee-b92d-606efc1ee283" />
+
+Post routing STA
+
+```
+Commands to run post routing STA
+read_lef /openLANE_flow/designs/picorv32a/runs/latest_25-03/tmp/merged.lef
+read_def /openLANE_flow/designs/picorv32a/runs/latest_25-03/results/routing/picorv32a.def
+read_spef /openLANE_flow/designs/picorv32a/runs/latest_25-03/results/routing/picorv32a.spef
+
+write_db picorv32a_routing.db
+
+read_db picorv32a_routing.db
+read_verilog /openLANE_flow/designs/picorv32a/runs/latest_25-03/results/synthesis/picorv32a.synthesis_preroute.v
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+##read_liberty -max $::env(LIB_SLOWEST)
+##read_liberty -min $::env(LIB_FASTEST)
+link_design picorv32a
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+set_propagated_clock [all_clocks]
+report_checks -path_delay min_max -format full_clock_expanded -digits 4 -fields {net cap slew input_pins fanout}
+```
+
+
+
+
