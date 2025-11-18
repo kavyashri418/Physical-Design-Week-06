@@ -209,12 +209,232 @@ less
 
 <img width="1010" height="768" alt="Screenshot 2025-11-18 200235" src="https://github.com/user-attachments/assets/f8fbb560-a811-40d7-8e2a-00d280461f95" />
 
+Execute the following commands in openlane directory
 
+```
+docker
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]      
+add_lefs -src $lefs
+run_synthesis
+```
 
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/1ce78aae-a85e-453f-a68a-9263c81853bc" />
 
+<img width="1774" height="240" alt="image" src="https://github.com/user-attachments/assets/91a835c3-2084-4bf8-b7fe-42e7997f00fe" />
 
+To verify if your custom cell is placed in the design, navigate to the placement directory and use the following command:
+```
+# Change directory to path containing generated placement def
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/24-03_10-03/results/placement/
 
+# Command to load the placement def in magic tool
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
+```
+This will launch the OpenDB viewer, which allows you to visualize the placement of your design, including your custom cell.
 
+<img width="987" height="788" alt="Screenshot 2025-11-18 220723" src="https://github.com/user-attachments/assets/7663abb3-0cc0-4681-9e81-691747a5d9f6" />
+
+Command for tkcon window to view internal layers of cell
+```
+#Command to view internal connectivity layers
+expand
+```
+
+<img width="695" height="523" alt="Screenshot 2025-11-18 230344" src="https://github.com/user-attachments/assets/6098fba3-319a-406e-8e20-132e2d3b80e9" />
+
+## LAB-4.2 Configure OpenSTA for Post-synth timing analysis
+
+- The PnR process can lead to changes in timing violations, including new ones, improved ones, and worsened ones.
+- Usually, a dedicated timing tool (like PrimeTime) is run separately from the automated flow for timing analysis and ECO generation.
+- In OpenLANE, OpenSTA is employed for analyzing timing after synthesis.
+
+Commands to invoke the OpenLANE flow include new lef and to perform synthesis:
+
+```
+#Change directory to openlane flow directory
+cd Desktop/work/tools/openlane_working_dir/openlane
+
+docker
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a
+
+#Adiitional commands to include newly added lef to openlane flow
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+
+#Command to set new value for SYNTH_SIZING
+set ::env(SYNTH_SIZING) 1
+
+run_synthesis
+```
+
+OpenSTA config file: pre_sta.conf:
+```
+set_cmd_units -time ns -capacitance fF -current uA -voltage V -resistance kOhm -distance um
+
+read_liberty -max ./designs/picorv32a/src/sky130_fd_sc_hd__slow.lib
+read_liberty -min ./designs/picorv32a/src/sky130_fd_sc_hd__fast.lib
+
+#read_verilog ./designs/picorv32a/src/picorv32a.v
+read_verilog ./designs/picorv32a/runs/latest_21-03/results/synthesis/picorv32a.synthesis.v
+
+link_design picorv32a
+read_sdc ./designs/picorv32a/src/my_base.sdc
+
+check_setup -verbose
+
+report_checks -path_delay min_max -fields {nets cap slew trans input_pins}
+report_tns
+report_wns
+```
+
+## LAB-4.3 Optimize Synthesis to reduce setup violations
+
+```
+# Now the OpenLANE flow is ready to run any design and initially we have to prep the design creating some necessary files and directories for running a specific design which in our case is 'picorv32a'
+prep -design picorv32a -tag 17-11_17-33 -overwrite
+
+# Adiitional commands to include newly added lef to openlane flow
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+
+# Command to set new value for SYNTH_SIZING
+set ::env(SYNTH_SIZING) 1
+
+# Command to set new value for SYNTH_MAX_FANOUT
+set ::env(SYNTH_MAX_FANOUT) 4
+
+# Command to display current value of variable SYNTH_DRIVING_CELL to check whether it's the proper cell or not
+echo $::env(SYNTH_DRIVING_CELL)
+
+run_synthesis
+```
+
+## LAB-4.4 Steps to do basic Timing ECO
+
+- Analyzing setup violations in OpenSTA helps identify reasons for timing issues.
+- Common reasons include large output slew due to high capacitance load or fanout that the synthesis tool couldn't optimize.
+
+Fixing Timing Violations
+
+1. Upsizing Cells: Replace a cell instance with a higher drive strength version to reduce delay.
+    - Use the replace_cell command: replace_cell instance lib_cell
+    - Example: replace_cell _44195_ sky130_fd_sc_hd__inv_4
+      
+2. Verify Fix: Check if the violation is resolved using report_checks
+    - Example: report_checks -from <instance or pin> -to <instance or pin> -through _44195_ -path_delay min_max
+
+Updating the Netlist- After fixing timing violations, update the netlist file using write_verilog
+    - Example: write_verilog $OPENLANE_HOME/designs/picorv32a/runs/latest_21-03/results/synthesis/picorv32a.synthesis.v
+
+Iterative Timing Fixing Process- Fixing timing violations is an iterative process involving STA engineers and PnR engineers.
+- STA engineers modify the design (e.g., upsize cells, replace cells, insert buffers) and provide ECOs to PnR engineers.
+- PnR engineers update the design, perform post-route timing analysis, and provide feedback to STA engineers.
+- This process repeats until all timing violations are resolved.
+
+## LAB-4.5 Steps to run CTS using TritonCTS
+
+- Replace previous design with improved design using write_verilog command.
+- Specify path of previous design to overwrite with improved version.
+- Floorplan: Use same commands as before to start floorplanning
+- Placement: Run placement using run_placement command
+- CTS (Clock Tree Synthesis): Perform CTS using run_cts command
+-  After CTS completion, a new .cts file is added to synthesis results directory
+- This file contains:
+    - Previous netlist
+    - Clock buffers added during CTS stage
+
+<img width="977" height="152" alt="Screenshot 2025-11-18 232531" src="https://github.com/user-attachments/assets/809c5846-a0af-4bb2-af52-2277140417df" />
+
+## LAB-4.6 Steps to analyze timing with real clocks using OpenSTA
+
+```
+1. Enter OpenROAD- Enter OpenROAD using the command: openroad
+
+2. Load Design Data- Load LEF (Library Exchange Format) file: read_lef /openLANE_flow/designs/picorv32a/runs/04-05_21-50/tmp/merged.lef
+- Load DEF (Design Exchange Format) file: read_def /openLANE_flow/designs/picorv32a/runs/04-05_21-50/results/cts/picorv32a.cts.def
+
+3. Save Database- Save the database: write_db pico_cts.db
+
+4. Load Database- Load the saved database: read_db pico_cts.db
+
+5. Load Design Files- Load Verilog file: read_verilog /openLANE_flow/designs/picorv32a/runs/04-05_21-50/results/synthesis/picorv32a.synthesis_cts.v
+ Load Liberty file: read_liberty $::env(LIB_SYNTH_COMPLETE)
+ Load SDC (Synopsys Design Constraints) file: read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+
+6. Set Propagated Clock- Set propagated clock: set_propagated_clock [all_clocks]
+
+7. Report Timing- Report timing: report_checks -path_delay min_max -format full_clock_expanded -digits 4
+```
+
+<img width="957" height="338" alt="Screenshot 2025-11-18 233132" src="https://github.com/user-attachments/assets/8053d98a-bd6d-4624-91e7-dfb77fd2438b" />
+
+## LAB-4.7 Steps to execute OpenSTA with right timing libraries and CTS assignment
+
+Remove Cell from CTS Buffer List
+```
+Remove sky130_fd_sc_hd__clkbuf_1 from CTS_CLK_BUFFER_LIST:
+
+tcl
+set ::env(CTS_CLK_BUFFER_LIST) [lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0]
+```
+
+Check Environment Variables
+```
+Check current value of CTS_CLK_BUFFER_LIST: echo $::env(CTS_CLK_BUFFER_LIST)
+Check current value of CURRENT_DEF: echo $::env(CURRENT_DEF)
+```
+
+Set Placement DEF
+```
+Set CURRENT_DEF to placement DEF:
+tcl
+set ::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/04-05_21-50/results/placement/picorv32a.placement.def
+```
+
+Run CTS
+```
+Run CTS: run_cts
+```
+Verify Changes
+```
+Check updated CTS_CLK_BUFFER_LIST: echo $::env(CTS_CLK_BUFFER_LIST)
+```
+
+## LAB-4.8 Observing Impact of Bigger CTS Buffers on Setup and Hold Timing
+
+Load Design Data
+```
+Load LEF file: read_lef /openLANE_flow/designs/picorv32a/runs/04-05_21-50/tmp/merged.lef
+Load DEF file: read_def /openLANE_flow/designs/picorv32a/runs/04-05_21-50/results/cts/picorv32a.cts.def
+```
+
+Save and Load Database
+```
+Save database: write_db pico_cts1.db
+Load database: read_db pico_cts1.db
+```
+
+Load Design Files
+```
+Load Verilog file: read_verilog /openLANE_flow/designs/picorv32a/runs/04-05_21-50/results/synthesis/picorv32a.synthesis_cts.v
+Load Liberty file: read_liberty $::env(LIB_SYNTH_COMPLETE)
+Link design: link_design picorv32a
+Load SDC file: read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+```
+
+Analyze Timing
+```
+ Set propagated clock: set_propagated_clock [all_clocks]
+ Report timing: report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+ Report clock skew:
+     Hold: report_clock_skew -hold
+     Setup: report_clock_skew -setup
+```
 
 
 
