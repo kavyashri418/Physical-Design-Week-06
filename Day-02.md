@@ -318,7 +318,64 @@ Delay = -42ps
   
 <img width="2681" height="1122" alt="Screenshot 2025-10-29 194030" src="https://github.com/user-attachments/assets/26bcebca-2e85-42b5-8567-d1c730efa86f" />
 
+## LAB-02 Run floorplan using OpenLANE and review the layout in Magic
 
+i. Switches for floorplan
+
+```
+#open the file
+less floorplan.tcl (containing the default parameter for the floorplan stage
+```
+
+ii. Run 'picorv32a' design floorplan using OpenLANE flow 
+
+```
+run_floorplan
+```
+
+iii. Review floorplan files and steps to view floorplan
+
+```
+#open the file
+less config.tcl
+```
+
+iv. Floorplan layout in Magic 
+
+```
+# Change directory to path containing generated floorplan def
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/29-10_08-49/results/floorplan/
+
+# Command to load the floorplan def in magic tool
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
+```
+
+## Floorplan view in Magic
+
+
+
+Design Alignment Instructions
+
+Centering the Design:
+ - Press S to select the entire design.
+ - Press V to vertically align it to the middle of the screen.
+   
+Zooming In on a Specific Area:
+ - Left-click and drag to select the desired region.
+ - Right-click to bring up the context menu.
+ - Press Z to zoom in on the selected area.
+  
+Getting Details of a Cell:
+ - Move your cursor to the cell of interest.
+ - Press S to select the cell.
+ - In the tkcon window, enter the command "what" to display cell details.
+
+## Horizontal ports metal layers set by the config.tcl
+
+## Vertical ports metal layer set by congig.tcl
+
+
+## LAB-2.1
 
 
 
