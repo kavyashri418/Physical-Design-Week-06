@@ -102,6 +102,119 @@ DRC Check
 
 ![Web_Photo_Editor (2)](https://github.com/user-attachments/assets/578b3d09-3654-4549-afd9-aa7ec491eaba)
 
+## LAB-04 Convert grid info to track info 
+
+### Port Configuration
+
+1.Define Ports: Create boxes on the relevant layers and add labels with the layer names for A, Y, VPWR, and VGND.
+
+2. Set Port Attributes:
+    - For A and Y, set CLASS to input and USE to signal.
+    - For VPWR and VGND, set CLASS to inout and USE to power.
+      
+3. Layout Requirements:
+    - Ensure input/output ports are located at the intersection of vertical and horizontal tracks.
+    - Verify the width of the standard cell is an odd multiple of the track pitch.
+    - Verify the height of the standard cell is a multiple of the track vertical pitch.
+
+
+LEF File Generation
+
+1. Track Information: Refer to the track information in pdks/sky130A/libs.tech/openlane/sky130_fd_sc_hd/tracks.info for the routing stage.
+2. Generate LEF File: Use the lef write command in the console window to generate the LEF file.
+
+The LEF file will contain essential information for Place-and-Route (PnR), including:
+
+- PnR boundary of the standard cell
+- Power and ground rails
+- Input and output ports
+
+Extract the '.lef' file from the '.mag' file.
+
+```
+#open the layout
+magic -T sky130A.tech sky130_inv.mag
+
+#Open the track info
+cd pdks/sky130A/livs.tech/openlane
+less track.info
+```
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/86cd5daf-6554-49a6-945e-0dbabd926bd0" />
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/767b5a5a-386e-4503-a065-d5cb497e1b12" />
+
+```
+# Change directory to vsdstdcelldesign
+cd Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
+
+# Command to open custom inverter layout in magic
+magic -T sky130A.tech sky130_inv.mag &
+```
+
+Tracks are essentially predefined paths on metal layers (like metal 1, metal 2) used during the routing stage to guide automated Place-and-Route (PNR) tools. To visualize the grid, press 'g' in the layout environment.
+
+Commands for tkcon window to set grid as tracks of locali layer
+```
+# Get syntax for grid command
+help grid
+
+# Set grid values accordingly
+grid 0.46um 0.34um 0.23um 0.17um
+```
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/e77ff10a-c9ef-48f1-8795-a2a1602f6621" />
+
+- Place input/output ports at grid intersections to align with routing tracks.
+- Ensure the cell width is an odd multiple of the horizontal track spacing.
+- Ensure the cell height is an odd multiple of the vertical track spacing.
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/335f5062-d314-4d2f-8929-bb83ea0db490" />
+
+## LAB-4.1 Convert magic layout to standard cell LEF
+
+- Assign port names and values:
+    - Input/Output ports: set CLASS and USE attributes accordingly
+    - Power and Ground ports (VPWR, VGND):
+        - Set CLASS to inout and USE to power
+        - Attach to Metal1 layer
+
+<img width="835" height="572" alt="Screenshot 2025-11-18 195719" src="https://github.com/user-attachments/assets/eb81e311-cffa-416a-992e-313f68e2dc90" />
+
+set ports class and port use attributes
+
+```
+#in tckon
+what
+port class output
+port use signal
+```
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/53b0d8a3-dd6a-49c6-b849-c82a90cff99b" />
+
+Extract the lef file
+
+```
+#in tkcon
+save sky130_vsdinv.mag
+
+#in the directory vsdcellstddesign
+magic -T sky130A.tech sky130_vsdinv.mag
+
+#in tckon
+lef write
+
+#open the lef file
+less
+```
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/bdf9fe4f-89bf-4115-9d4a-f4d40d5eb8b0" />
+
+<img width="1010" height="768" alt="Screenshot 2025-11-18 200235" src="https://github.com/user-attachments/assets/f8fbb560-a811-40d7-8e2a-00d280461f95" />
+
+
+
+
+
+
+
 
 
 
