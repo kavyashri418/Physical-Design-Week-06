@@ -149,7 +149,118 @@ goto m3.1
 
 Now have a look on the internal layers inside a metal (m3.5)
 
+- Vias are a type of derived layer in Magic, where the drawn via represents a filled area with contact cuts.
+- The contact cuts are created based on rules in the CIF output section of the tech file.
+
 <img width="1437" height="899" alt="image" src="https://github.com/user-attachments/assets/3e6fae21-a75f-4012-b942-bf2e8eb2f9a6" />
+
+## LAB-2 DRC: poly.mag
+
+- https://skywater-pdk.readthedocs.io/en/main/rules/periphery.html#poly
+
+<img width="1130" height="369" alt="Screenshot 2025-11-18 191120" src="https://github.com/user-attachments/assets/2affa869-fc67-42ce-a38e-b56c4301114d" />
+  
+- The poly.9 DRC rule in the sky130A.tech file is incomplete, causing a spacing violation between a poly resistor and nearby poly or diff/tap layers to go unreported. The rule requires a minimum spacing of 0.480 µm, but the implementation is missing, allowing the violation to go undetected.
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/3b186507-cc39-4d3e-be2f-d6adbd097202" />
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/e8ce6bf5-75ab-42ce-a59b-27a6b889f1a1" />
+
+New commands inserted in sky130A.tech file to update drc
+
+- To implement the missing poly.9 spacing rules, you'll need to add the necessary lines to the tech file. Specifically, the rules for poly resistor spacing to poly are missing and need to be implemented. This can be done by adding the required lines to the appropriate sections of the sky130A.tech file, ensuring the poly resistor has the correct spacing to poly layers.
+
+```
+spacing npres allpolynonres 480 touching_illegal \
+        "poly.resistor spacing to poly < %d (poly.9)"
+
+spacing xhrpoly,uhrpoly,xpc allpolynonres 480 touching_illegal \
+      "xhrpoly/uhrpoly resistor spacing to poly < %d (poly.9)"
+```
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/411c769a-8adb-4487-a81a-4e1c218857d4" />
+
+- From the console window, reload the tech file: tech load sky130A.tech
+- The DRC checks needs to be run again, by executing: drc check
+
+```
+#To load the .tech file
+tech load sky130A.tech
+
+# Must re-run drc check to see updated drc errors
+drc check
+
+# Selecting region displaying the new errors and getting the error messages 
+drc why
+```
+
+## LAB-3: poly.mag poly resistor spacing to diff and tap
+
+- The additions made to the poly.9 DRC rule are incomplete.
+- Two copies of npolyres, ppolyres, and xhrpolyres are created with surrounding diff and tap layers.
+- Nwell is added under pdiffusion and N-tap to avoid unrelated DRC errors.
+- DRC spacing violations are observed for ppolyres and xhrpolyres, but not npolyres (except to N-tap).
+- npolyres spacing rule needs to be updated to consider all diffusion types, not just nsd.
+
+```
+Before
+spacing npres *nsd 480 touching_illegal \ 
+   "poly.resistor spacing to N-tap < %d (poly.9)"
+
+After
+spacing npres alldiff 480 touching_illegal \ 
+   "poly.resistor spacing to N-tap < %d (poly.9)"
+```
+
+## LAB-4: nwell.mag
+
+- https://skywater-pdk.readthedocs.io/en/main/rules/periphery.html#nwell
+
+<img width="726" height="354" alt="Screenshot 2025-11-18 192636" src="https://github.com/user-attachments/assets/0df0bac9-bae7-4933-b282-07327845d49d" />
+
+- nwell.5:
+    - Nwell must surround deep nwell with a minimum overlap of 0.400µm.
+    - Exceptions apply within UHVI or areaid.lw areas.
+    - Nwells can overlap deep nwell if spacing is insufficient (as per nwell.2).
+- nwell.6:
+    - Deep nwell must enclose nwell holes with a minimum distance of 1.030µm outside UHVI regions
+ 
+templayer nwell_missing dnwell:
+```
+templayer dnwell_shrink dnwell
+shrink 1030
+```
+
+New command inserted in sky130A.tech file to update DRC
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/ccb9d566-75b9-4697-b9d6-ac05de1bf140" />
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/ea9613c7-25a8-4016-a06b-92a50dad1cd4" />
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/7223f97d-bbab-4d76-b8e9-168aa8a532ba" />
+
+Commands to run in tkcon window
+
+```
+# Loading updated tech file
+tech load sky130A.tech
+
+# Change drc style to drc full
+drc style drc(full)
+
+# Must re-run drc check to see updated drc errors
+drc check
+
+# Selecting region displaying the new errors and getting the error messages 
+drc why
+```
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/c76d74e0-55bf-4b62-98c5-17e282f46de6" />
+
+The layout has been successfully created and verified using Magic VLSI tool and Tkcon, confirming it is free from design rule violations and compliant with the sky130A.tech file specifications. This verification gives assurance that the layout is manufacturable without any fabrication issues. The exercise underscores the significance of adhering to geometric design constraints, such as minimum dimensions and spacing for metal and poly layers, accurate via placements, and proper layer overlaps and enclosures. Utilizing Tkcon commands enabled thorough visual and logical checks, facilitating the identification and rectification of DRC errors in an interactive manner.
+
+
+
+
+
 
 
 
