@@ -92,5 +92,17 @@ Lee’s algorithm is a grid-based, breadth-first search (BFS) routing method use
 | Outcome  | A valid routed path               | Pass/Fail for layout validity        |
 | Relation | Router avoids DRC-violating cells | Defines obstacles for router         |
 
+## Routing and Design Rule Check (DRC)
+
+![Web_Photo_Editor](https://github.com/user-attachments/assets/74bb4d84-aaba-49ff-935d-a61aee14e9e1)
+
+![Web_Photo_Editor (1)](https://github.com/user-attachments/assets/81e9d4b6-9d01-4536-923e-d036c6428669)
+
+DRC Check
+
+![Web_Photo_Editor (2)](https://github.com/user-attachments/assets/578b3d09-3654-4549-afd9-aa7ec491eaba)
+
+
+
 
 
