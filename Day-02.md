@@ -51,6 +51,10 @@ Similarly there are other IP's also available for eg
 
 c) De-coupling Capacitors
 Surround pre-placed cells with decoupling capacitor
+Decouples the circuit from the VDD rail
+Reduce Zpdn for the required frequencies of operation
+Serve as a charge reservoir for the switching current demands that the VDD rail cannot satisfy.
+Surround pre-placed cells with Decaps to compensate for the switching current demands (di/dt)
 
 <img width="2886" height="1937" alt="Screenshot 2025-10-29 122845" src="https://github.com/user-attachments/assets/83a6faa8-c4ab-4fa2-b1c0-29f0f41e2dc2" />
 
@@ -69,6 +73,14 @@ For any signal to be considered as logic '0' and logic '1' it should be in the N
 <img width="2815" height="1286" alt="Screenshot 2025-10-29 131617" src="https://github.com/user-attachments/assets/06332c47-9dba-4ef9-b655-4a3ea1a571f4" />
 
 d) Power Planning
+
+- L*di/dt
+   Discharging : Ground bounce
+   Charging : Voltage Droop
+- Solution: Reduce the Vdd/ Vss parasitics ->
+   Power grid
+   Multiple VDD, VSS pins/ balls
+
 
 <img width="2438" height="1841" alt="Screenshot 2025-10-29 135515" src="https://github.com/user-attachments/assets/ac557b31-d2a5-4a36-9e85-f11b3c430732" />
 
@@ -91,11 +103,15 @@ Also, all capacitors which were '0' volts will have to charge to 'v' volts throu
 
 e) Pin Placement and Logical Cell Placement Blockage
 Lets take below design for eg that needs to be implemented
+Usually: East -> West, North -> South, {East, North} -> {West, South}
+Pin ordering is random (unless we specify explicitly ?)
+Front-End to Back-End team communication/ handshaking needed for optimal pin placement
+CLK ports/ pins are usually bigger to reduce the clk net resistance
 
 <img width="2168" height="1977" alt="Screenshot 2025-10-29 141126" src="https://github.com/user-attachments/assets/3d6f4a2d-e73d-45b6-a3ea-379e30083fc5" />
 
 The connectivity information between the gates is coded using verilog language and is called as the netlist.
-
+Now Floorplan is ready for PnR
 <img width="2574" height="1807" alt="Screenshot 2025-10-29 142201" src="https://github.com/user-attachments/assets/abecaf25-5f41-4c1f-8c4b-857eaa85f53d" />
 
 ## 2 Library Binding and Placement
