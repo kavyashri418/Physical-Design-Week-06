@@ -332,13 +332,23 @@ ii. Run 'picorv32a' design floorplan using OpenLANE flow
 ```
 run_floorplan
 ```
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/89f81f38-0326-4860-bcb9-11dc9d8b58b7" />
 
-iii. Review floorplan files and steps to view floorplan
+iii. Review floorplan files 
 
 ```
 #open the file
 less config.tcl
 ```
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/65d82cd9-0b4c-4a30-abb2-fb19adc49c48" />
+
+```
+#open the file
+less picorv32a.floorplan.def
+```
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/05f3caf7-d59e-4367-a25d-11ef6e64d737" />
 
 iv. Floorplan layout in Magic 
 
@@ -350,9 +360,11 @@ cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/29-10
 magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
 ```
 
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/dd6505a2-d90b-4338-92bb-fdfa90711af2" />
+
 ## Floorplan view in Magic
 
-
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/5e7c5b41-a8ec-452f-bef1-d702e0faf604" />
 
 Design Alignment Instructions
 
@@ -372,16 +384,21 @@ Getting Details of a Cell:
 
 ## Horizontal ports metal layers set by the config.tcl
 
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/e1c3bcc7-1f0d-44f3-8118-92f6585754e2" />
+
 ## Vertical ports metal layer set by congig.tcl
 
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/cb941c21-d7bd-41fd-8509-91b390d77419" />
 
 ## LAB-2.1 Congestion aware placement using replace
 
 - Runs the global placement followed by detailed placement.
-- 
+ 
 ```
 run_placement
 ```
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/ddf7f0d2-f77e-4c87-b467-744d718099e3" />
 
 - First the global placement happens, where the main objective is to reduce the wire length. Algorithm used is Half-Parameter Wire Length (HPWL).
 - Then detailed placement is performed to legalize the globally placed components.
@@ -390,13 +407,26 @@ Commands to load placement def in magic
 
 ```
 # Change directory to path containing generated placement def
-cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/29-010_08-49/results/placement/
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/17-11_17-04/results/placement/
 
 # Command to load the placement def in magic tool
 magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
 ```
 
 ## Layout after Placement
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/65af4f1a-ed4f-43e2-8517-75877b37f58f" />
+
+## Placed Standard Cells
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/c78b589d-9296-47cf-af5f-9b2fce1179d8" />
+
+
+
+
+
+
+
 
 
 
