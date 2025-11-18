@@ -65,5 +65,13 @@ Two reasons for this
 
 ## 1.8 Formation of Higher Level Metal Layers
 
+![Web_Photo_Editor (11)](https://github.com/user-attachments/assets/362cce10-a8be-4272-8360-be68aea609e7)
+![Web_Photo_Editor (12)](https://github.com/user-attachments/assets/b4d3dbe9-7fe7-4384-9b1a-b977d2e73c6a)
+
 ## 1.9 Final Wafer after Fabrication
+
+<img width="1251" height="1016" alt="Screenshot 2025-11-16 210609" src="https://github.com/user-attachments/assets/ac2afeef-0c0f-4549-8a1e-029b0347ad32" />
+
+## LAB-03 Introduction to Sky130 basic layers layout and LEF using inverter
+
 
