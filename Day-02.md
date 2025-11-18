@@ -203,35 +203,35 @@ f) Layout Design
 
 ## 4 Typical Characterization Flow
 
-a) Read the model files
+### a) Read the model files
 
 <img width="2825" height="636" alt="Screenshot 2025-10-29 185843" src="https://github.com/user-attachments/assets/58491b95-5a59-4326-9e8e-81be751a5e74" />
 
-b) Read the extracted SPICE netlist
+### b) Read the extracted SPICE netlist
 
 <img width="1077" height="680" alt="Screenshot 2025-10-29 185904" src="https://github.com/user-attachments/assets/9a7ac3da-89ca-443c-b87f-f9501360d059" />
 
-c) Recognize the behavior of buffer
+### c) Recognize the behavior of buffer
 
 <img width="3266" height="1733" alt="Screenshot 2025-10-29 185929" src="https://github.com/user-attachments/assets/c733a84a-3b7c-4a82-a44a-3ce4be71f545" />
 
-d) Red the sub circuits of inverter
+### d) Red the sub circuits of inverter
 
 <img width="1271" height="499" alt="Screenshot 2025-10-29 185958" src="https://github.com/user-attachments/assets/7736c063-bb9f-4c13-8bcd-a955255eaa3c" />
 
-e) Attach necessary power supply
+### e) Attach necessary power supply
 
 <img width="3244" height="1735" alt="Screenshot 2025-10-29 190039" src="https://github.com/user-attachments/assets/6438a4d5-567e-4cdb-bbf0-af0d16046d33" />
 
-f) Provide necessary output capacitance
+### f) Provide necessary output capacitance
 
 <img width="3240" height="1757" alt="Screenshot 2025-10-29 190057" src="https://github.com/user-attachments/assets/367abf2f-6a93-4b07-9153-5b333dc2496b" />
 
-g) Provide necessary transition
+### g) Provide necessary transition
 
 <img width="3249" height="1747" alt="Screenshot 2025-10-29 190125" src="https://github.com/user-attachments/assets/3f52ce4c-ffd7-4c5e-9683-ad431f752c60" />
 
-h) Feed all the steps from 1-8 to software GUNA it will generate timing, noise power.libs, function.
+### h) Feed all the steps from 1-8 to software GUNA it will generate timing, noise power.libs, function.
 
 <img width="1068" height="676" alt="Screenshot 2025-10-29 190146" src="https://github.com/user-attachments/assets/ece32e89-3a0f-4ada-91d6-325322c0062e" />
 
@@ -245,35 +245,35 @@ It gives an important classfication
 ## 5 General Timing Characterization Process
 Timing Characterization
 
-i) slew_low_rise_thr\
+### i) slew_low_rise_thr\
 
 <img width="3292" height="1690" alt="Screenshot 2025-10-29 191525" src="https://github.com/user-attachments/assets/53efccd0-8bc3-44f5-a532-2a91110645f4" />
 
-ii) slew_high_rise_thr
+### ii) slew_high_rise_thr
 
 <img width="3312" height="1693" alt="Screenshot 2025-10-29 191627" src="https://github.com/user-attachments/assets/3f62cf7c-afd6-4f9d-a279-229ec3f3300f" />
 
-iii) slew_low_fall_thr
+### iii) slew_low_fall_thr
 
 <img width="3292" height="1730" alt="Screenshot 2025-10-29 191756" src="https://github.com/user-attachments/assets/80a7519c-ffb0-4c1f-956c-921c95f3b595" />
 
-iv) slew_high_fall_thr
+### iv) slew_high_fall_thr
 
 <img width="3297" height="1709" alt="Screenshot 2025-10-29 191827" src="https://github.com/user-attachments/assets/f3ebd390-b619-403f-a5dd-ed2f628cd9f5" />
 
-v) in_rise_thr
+### v) in_rise_thr
 
 <img width="3335" height="1740" alt="Screenshot 2025-10-29 191942" src="https://github.com/user-attachments/assets/77c40cc6-fd5a-496e-8086-4fe4f6607049" />
 
-vi) in_fall_thr
+### vi) in_fall_thr
 
 <img width="3283" height="1701" alt="Screenshot 2025-10-29 192105" src="https://github.com/user-attachments/assets/3cd2bfc3-0df5-428a-accc-1a3f419aba8e" />
 
-vii) out_rise_thr
+### vii) out_rise_thr
 
 <img width="3331" height="1716" alt="Screenshot 2025-10-29 192015" src="https://github.com/user-attachments/assets/e489e325-d449-4b03-b019-a2b2cdfc2634" />
 
-viii) out_fall_thr
+### viii) out_fall_thr
 
 <img width="3275" height="1701" alt="Screenshot 2025-10-29 192137" src="https://github.com/user-attachments/assets/95d6907e-c01b-4dc5-b1fa-972301738e42" />
 
