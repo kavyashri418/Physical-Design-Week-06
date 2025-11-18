@@ -375,7 +375,32 @@ Getting Details of a Cell:
 ## Vertical ports metal layer set by congig.tcl
 
 
-## LAB-2.1
+## LAB-2.1 Congestion aware placement using replace
+
+- Runs the global placement followed by detailed placement.
+- 
+```
+run_placement
+```
+
+- First the global placement happens, where the main objective is to reduce the wire length. Algorithm used is Half-Parameter Wire Length (HPWL).
+- Then detailed placement is performed to legalize the globally placed components.
+
+Commands to load placement def in magic 
+
+```
+# Change directory to path containing generated placement def
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/29-010_08-49/results/placement/
+
+# Command to load the placement def in magic tool
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
+```
+
+## Layout after Placement
+
+
+
+
 
 
 
