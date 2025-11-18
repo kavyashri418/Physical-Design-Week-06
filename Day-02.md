@@ -1,8 +1,14 @@
 # Good Floorplan vs Bad Floorplan and Introduction to Library Cells
 
 ## 1 Chip Floor Planning Considerations
+
+Utilization Factor and Aspect Ratio
+In order to find out the Utilization Factor and Aspect Ratio, first we need to know how to define height and width of core and die areas.
+- Core is an area in a chip which is used to place all the logic cells and components in a chip. It is the place where logic lies in a chip.
+- Die is an area that encircles the core area and used for placing I/O related components.
+
 a) Define Width and Height of Core and Die
-Lets begin with a netlist
+Lets begin with a netlist The height and width of core area will be decided by the netlist of the design. It will be based on the no.of components required in order to execute the logic and the height and width of the die area will be dependent on the core area height and width.
 
 <img width="1665" height="541" alt="Screenshot 2025-10-29 104048" src="https://github.com/user-attachments/assets/a33cea8b-a8ae-46aa-8e93-ee38483e8deb" />
 
@@ -74,6 +80,8 @@ For any signal to be considered as logic '0' and logic '1' it should be in the N
 
 d) Power Planning
 
+In the previous section we used De-cap cells to manage power for different blocks.But Decap cells have some limitations such as Leakage power and increase in the area of chip. To overcome these we use a technique called Powerplanning. In some areas of the chip when there is more switching happening, two tyoes of phenomena can occur.
+
 - L*di/dt
    Discharging : Ground bounce
    Charging : Voltage Droop
@@ -93,7 +101,12 @@ Now let the output of 16-bit bus, is connected to an inverter.
 <img width="1081" height="892" alt="Screenshot 2025-10-29 135628" src="https://github.com/user-attachments/assets/2b88910e-87f3-453e-ab64-6c9cb74af015" />
 
 What does this mean?
+
 This means all capacitors which were charged to 'v' volts will have to discharge to '0' volts through single 'gnd' tap point. This will cause a bump in 'gnd' tap point.
+
+- Voltage drop - When a group of cells are simultaneously switching from 0 to 1, then every cell needs the power and In case the power is supplying from one source, there may occur the shotage of power and drop in the input voltage happens at that place. This is called as "Voltage Drop". The problem occurs only when the voltage level goes below the noise margin.
+  
+- Ground Bounce : When a group of cells are simultaneoisly switching from 1 to 0, then every cell dumps the power to th ground simultaneously to the same ground pin. In this case the ground instead of being at 0 experiences a short rise in the voltage and this is called as "Ground Bounce".The problem occurs only when the voltage level goes above the noise margin.
 
 <img width="2713" height="581" alt="Screenshot 2025-10-29 135617" src="https://github.com/user-attachments/assets/f2071146-66e7-48a6-b160-bd21990831ce" />
 
@@ -102,11 +115,12 @@ Also, all capacitors which were '0' volts will have to charge to 'v' volts throu
 <img width="2510" height="1994" alt="Screenshot 2025-10-29 135744" src="https://github.com/user-attachments/assets/18e64f07-ee2d-46aa-b54a-bfb2c1d2d457" />
 
 e) Pin Placement and Logical Cell Placement Blockage
-Lets take below design for eg that needs to be implemented
-Usually: East -> West, North -> South, {East, North} -> {West, South}
-Pin ordering is random (unless we specify explicitly ?)
-Front-End to Back-End team communication/ handshaking needed for optimal pin placement
-CLK ports/ pins are usually bigger to reduce the clk net resistance
+
+- Lets take below design for eg that needs to be implemented
+- Usually: East -> West, North -> South, {East, North} -> {West, South}
+- Pin ordering is random (unless we specify explicitly ?)
+- Front-End to Back-End team communication/ handshaking needed for optimal pin placement
+- CLK ports/ pins are usually bigger to reduce the clk net resistance
 
 <img width="2168" height="1977" alt="Screenshot 2025-10-29 141126" src="https://github.com/user-attachments/assets/3d6f4a2d-e73d-45b6-a3ea-379e30083fc5" />
 
@@ -122,10 +136,15 @@ i) Netlist binding and initial place design
 <img width="3662" height="967" alt="Screenshot 2025-10-29 143501" src="https://github.com/user-attachments/assets/a085861d-62cf-4f61-87c9-38a9cca1349d" />
 
 - Placement
+- 
+Placement is a key stage in the VLSI physical design flow where all standard cells, macros, and IP blocks are assigned physical locations on the chip layout after floorplanning and before routing. The goal of placement is to arrange these components optimally so that timing, power, area, and routability constraints are satisfied while minimizing overall wire-length
+  
 <img width="3812" height="1804" alt="Screenshot 2025-10-29 144826" src="https://github.com/user-attachments/assets/079dd8aa-3cf1-46a4-86a2-56766cf4f783" />
   
 - Optimize Placement
-  This is the stage where we estimate wire length and capacitance and based, on that insert repeaters.
+  
+During physical design, placement optimization involves arranging standard cells on the chip so that timing, power, and routing resources are efficiently utilized. A key part of this optimization is estimating wire-length and interconnect capacitance before actual routing. These early estimates guide placement decisions to minimize delay and congestion
+This is the stage where we estimate wire length and capacitance and based, on that insert repeaters.
   
 Stage 1
 
@@ -296,6 +315,8 @@ Delay = -42ps
 - time(slew_high_rise_thr) - time(slew_low_rise_thr)
   
 <img width="2681" height="1122" alt="Screenshot 2025-10-29 194030" src="https://github.com/user-attachments/assets/26bcebca-2e85-42b5-8567-d1c730efa86f" />
+
+
 
 
 
