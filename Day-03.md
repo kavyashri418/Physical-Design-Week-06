@@ -72,6 +72,102 @@ Two reasons for this
 
 <img width="1251" height="1016" alt="Screenshot 2025-11-16 210609" src="https://github.com/user-attachments/assets/ac2afeef-0c0f-4549-8a1e-029b0347ad32" />
 
-## LAB-03 Introduction to Sky130 basic layers layout and LEF using inverter
+<img width="1041" height="705" alt="image" src="https://github.com/user-attachments/assets/3c1d84e7-e2db-4d18-9a0e-3e3bc8824f44" />
+
+## LAB-03 Create a SPICE deck to run a inverter transient simulation using ngspice
+
+Edited spice file for ngspice simulation
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/36bb1af4-e02f-4eba-8e3e-4178a69c8389" />
+
+Commands for ngspice simulation
+```
+# Command to directly load spice file for simulation to ngspice
+ngspice sky130_inv.spice
+
+# Now that we have entered ngspice with the simulation spice file loaded we just have to load the plot
+plot y vs time a
+```
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/53c92c28-4216-4a31-b185-476c0f7b494f" />
+
+### Trans simulation results with Waveform
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/4407e5fa-c4c3-40d8-a1cc-75156cd34843" />
+
+## LAB-3.1 Introduction to DRC using Magic tool
+
+- The Design Rules for Skywater 130nm technology can be found here:https://skywater-pdk.readthedocs.io/en/main/rules.html
+
+<img width="1809" height="949" alt="Screenshot 2025-11-18 185111" src="https://github.com/user-attachments/assets/7f84904e-9bbb-450c-ace3-a42e9f080690" />
+
+
+- Obtain the tutorial files for DRC labs from the following link:
+  
+```
+wget http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz
+tar xfz drc_tests.tgz
+cd drc_tests
+ls -al
+vi .magicrc
+magic -d XR &
+```
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/61d5470a-73b4-4d38-96f2-fbcb201b8302" />
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/ad93c528-0fda-40c1-9570-91dead26f62e" />
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/637d542d-da55-4a94-ba8e-de003d324ea4" />
+
+## LAB-1 DRC: met3.mag
+- To open Magic using OpenGL or Cairo graphical interfaces, invoke magic using the -d option:
+```
+For OpenGL: magic -d XR &
+For Cairo: magic -d OGL &
+```
+- Open the met3.mag tutorial file in Magic either via the command line or from the GUI via File -> Open
+- Now check the DRC errors in a specific area
+
+Commands to check DRC
+```
+# To select the area
+select area
+
+# Must re-run drc check to see updated drc errors
+drc check
+
+# Selecting region displaying the new errors and getting the error messages 
+drc why
+
+# Metal of which we have select the area
+goto m3.1
+```
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/bf1fd3a3-5bc1-444a-84db-de9cffaee718" />
+
+- To view the DRC errors/ violations flagged for an area:
+
+<img width="1280" height="768" alt="image" src="https://github.com/user-attachments/assets/74e9736a-50a8-4387-8f04-9469a730d6c6" />
+
+Now have a look on the internal layers inside a metal (m3.5)
+
+<img width="1437" height="899" alt="image" src="https://github.com/user-attachments/assets/3e6fae21-a75f-4012-b942-bf2e8eb2f9a6" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
