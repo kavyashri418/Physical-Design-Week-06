@@ -69,9 +69,3 @@ Focus -
 | **Day 4** | Timing Analysis & Clock Tree Synthesis | ![Status](https://img.shields.io/badge/Status-Complete-brightgreen?style=for-the-badge)  |
 | **Day 5** | RTL-to-GDSII Completion & Routing | ![Status](https://img.shields.io/badge/Status-Complete-brightgreen?style=for-the-badge) |
 
-## 🙏 Acknowledgment
-
-I am sincerely grateful to [**Kunal Ghosh**](https://github.com/kunalg123) and the entire  **[VLSI System Design (VSD)](https://vsdiat.vlsisystemdesign.com/)** team for this incredible opportunity to participate in the RISC-V SoC Tapeout Program and contribute to this nationwide initiative.
-
-
-
